@@ -1,0 +1,35 @@
+text,is_spam,is_important,priority_score,predicted,actual,text_length
+"Vercel Ship starts in one week Vercel Ship is almost here
+May 1st - 5th
+Join us virtually for a special launch experience that will include updates on the future of Next.js and how Vercel is further integrating with popular frontend frameworks.
+${btnText}    ${btnText} <[[${btnURL}]]>
+Tune in to see what’s new + watch the main event—a keynote with Vercel CEO Guillermo Rauch—live on May 4.
+
+.
+",0,1,0.9547304884709992,1,0,395
+"Health how are you?
+",0,1,0.5884564858753532,1,0,20
+"The status of your study application in the myBTU-Portal has
+ changed ",0,1,0.965577062907656,1,0,70
+Dein LEBARA Tarif oder Zusatzoption wurde erfolgreich gebucht! ,0,1,0.8925323922413368,1,0,63
+$99 for 5 Nights in Magical Orlando with 2 Disney Tickets ,1,0,0.0,0,1,58
+Your document will expire in 14 days ,0,1,0.5649132640851529,1,0,37
+"Abhishek Gowda T EMPLOYEE BASED SOFTWARE PRIVATE LTD EMPLOYEE BASED SOFTWARE PRIVATE LTD - XXXXXXXXXX4332 - Account to Account Dear Customer, 
+
+ Please find attached payment advice for transaction reference No FT405313981259 for account number ending with XXXXXXXXXX1543.
+
+ This is a password protected advice.
+
+ To open the advice, please click on the attachment & enter the password. Password will be the last 6 digits of the beneficiary account number or the remitter domain id in BLOCK letters.
+
+ Refer Sample as below  :-
+
+  i.  If the account number is 123456789 (more than 6 digit), then your password will be last 6 digit of your account number . which is 456789 
+
+ ii.  If the account number is 12345 or ABC45 (less than 6 characters), then your password will be 12345 or ABC45, which is the entire length of the account number.
+
+ iii. If the beneficiary account number contains any special characters then the password will be last six digits excluding the special characters.ie; If the account number is 123-456-789-321-543 then the password will be last 6 digits 321543.
+
+ iv. If the remitter domain ID is 'test' then the password will be in BLOCK letters 'TEST' 
+
+ This is a system generated e-mail. Please do not reply on the same.",0,1,0.8535952772181379,1,0,1245

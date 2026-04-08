@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Email Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .model-selector {
+            margin-bottom: 20px;
+        }
+
+        .model-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .model-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .model-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .model-btn:hover {
+            background: #f0f0ff;
+        }
+
+        .model-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            resize: vertical;
+            min-height: 150px;
+            font-family: inherit;
+            margin-bottom: 20px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .classify-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .classify-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .classify-btn:active {
+            transform: translateY(0);
+        }
+
+        .classify-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result.spam {
+            background: #fee;
+            border: 2px solid #f44336;
+        }
+
+        .result.ham {
+            background: #efe;
+            border: 2px solid #4caf50;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .result-prediction {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .result.spam .result-prediction {
+            color: #f44336;
+        }
+
+        .result.ham .result-prediction {
+            color: #4caf50;
+        }
+
+        .result-confidence {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .result-details {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .result-detail {
+            text-align: center;
+        }
+
+        .result-detail-value {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .result-detail-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .examples {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .examples h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .example-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .example-btn:hover {
+            background: #f0f0ff;
+            border-color: #667eea;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🤖 AI Email Assistant</h1>
+        <p class="subtitle">Multi-Model Email Classification System</p>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value">98.92%</div>
+                <div class="stat-label">Best Accuracy (SVM)</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">0.75ms</div>
+                <div class="stat-label">Latency</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">5</div>
+                <div class="stat-label">Models Trained</div>
+            </div>
+        </div>
+
+        <div class="model-selector">
+            <label>Select Model:</label>
+            <div class="model-buttons">
+                <button class="model-btn active" data-model="svm">
+                    Linear SVM<br>
+                    <small>98.92% acc | 0.75ms</small>
+                </button>
+                <button class="model-btn" data-model="bert">
+                    BERT Transformer<br>
+                    <small>98.21% acc | 50ms</small>
+                </button>
+            </div>
+        </div>
+
+        <textarea id="emailText" placeholder="Paste your email text here..."></textarea>
+
+        <button class="classify-btn" id="classifyBtn">
+            Classify Email
+        </button>
+
+        <div class="result" id="result">
+            <div class="result-header">
+                <div class="result-prediction" id="prediction"></div>
+                <div class="result-confidence" id="confidence"></div>
+            </div>
+            <div class="result-details">
+                <div class="result-detail">
+                    <div class="result-detail-value" id="modelUsed"></div>
+                    <div class="result-detail-label">Model Used</div>
+                </div>
+                <div class="result-detail">
+                    <div class="result-detail-value" id="latency"></div>
+                    <div class="result-detail-label">Latency</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="examples">
+            <h3>Try Example Emails:</h3>
+            <button class="example-btn"
+                data-text="Dear team, please join us for the quarterly review meeting tomorrow at 2pm in the main conference room.">
+                📧 Legitimate Meeting Invite
+            </button>
+            <button class="example-btn"
+                data-text="CONGRATULATIONS!!! You've WON $1,000,000!!! Click here NOW to claim your prize before it expires!!!">
+                ⚠️ Obvious Spam
+            </button>
+            <button class="example-btn"
+                data-text="Hi, I reviewed your code changes and they look good. Can you also update the documentation before merging?">
+                💼 Work Email
+            </button>
+            <button class="example-btn"
+                data-text="FREE VIAGRA! CLICK NOW! Limited time offer! Buy now and get 50% discount!!!">
+                🚨 Spam Advertisement
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let selectedModel = 'svm';
+
+        // Model selection
+        document.querySelectorAll('.model-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.model-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedModel = this.dataset.model;
+            });
+        });
+
+        // Example buttons
+        document.querySelectorAll('.example-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.getElementById('emailText').value = this.dataset.text;
+            });
+        });
+
+        // Classify button
+        document.getElementById('classifyBtn').addEventListener('click', async function () {
+            const emailText = document.getElementById('emailText').value.trim();
+
+            if (!emailText) {
+                alert('Please enter some email text');
+                return;
+            }
+
+            const btn = this;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Classifying...';
+
+            try {
+                const response = await fetch(`${API_URL}/classify`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: emailText,
+                        model_type: selectedModel
+                    })
+                });
+
+                const result = await response.json();
+
+                // Show result
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result ' + (result.is_spam ? 'spam' : 'ham');
+
+                document.getElementById('prediction').textContent = result.prediction;
+                document.getElementById('confidence').textContent = `${(result.confidence * 100).toFixed(2)}% confident`;
+                document.getElementById('modelUsed').textContent = result.model_used;
+                document.getElementById('latency').textContent = `${result.latency_ms}ms`;
+
+            } catch (error) {
+                alert('Error: ' + error.message + '\n\nMake sure the API is running on http://localhost:8000');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Classify Email';
+            }
+        });
+    </script>
+</body>
+
+</html>

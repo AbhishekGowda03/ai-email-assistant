@@ -1,0 +1,6 @@
+data/raw/gmail.mbox
+data/raw/*.mbox
+data/processed/gmail_emails.csv
+credentials.json
+token.pickle
+models/transformer/model.safetensors

@@ -94,8 +94,24 @@ def create_dataset():
     # Load ham emails
     ham_emails = load_emails_from_folder(ham_folder, 'ham')
     
-    # Combine
-    all_emails = spam_emails + ham_emails
+    # Combine and balance
+    print(f"\nOriginal counts:")
+    print(f"  Spam: {len(spam_emails)}")
+    print(f"  Ham: {len(ham_emails)}")
+
+    # Balance: take minimum count from both classes
+    min_count = min(len(spam_emails), len(ham_emails))
+    print(f"\nBalancing to {min_count} emails per class...")
+
+    import random
+    random.seed(42)
+
+    spam_emails_balanced = random.sample(spam_emails, min_count)
+    ham_emails_balanced = random.sample(ham_emails, min_count)
+
+    all_emails = spam_emails_balanced + ham_emails_balanced
+
+    print(f"Final dataset: {len(all_emails)} emails (50% spam, 50% ham)")
     
     # Create DataFrame
     df = pd.DataFrame(all_emails)
