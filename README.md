@@ -77,7 +77,7 @@ FastAPI → Web UI
 ```bash
 Python 3.14+
 CUDA-capable GPU (optional, for faster training)
-24GB RAM (recommended)
+8GB+ RAM (16GB recommended for transformer training)
 ```
 
 ### Installation
